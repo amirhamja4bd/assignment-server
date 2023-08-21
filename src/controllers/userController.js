@@ -5,7 +5,6 @@ exports.register = async (req, res) => {
   try {
     const { name, email , password, photo, role, social } = req.body;
 
-    // Check if userName and password are provided
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
@@ -39,20 +38,16 @@ exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Check if userName and password are provided
     if (!email || !password) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
 
-    // Find the user by userName
     const user = await User.findOne({ email });
 
-    // If no user is found, return an error
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Compare the provided password with the user's password
     if (password !== user.password) {
       return res.status(401).json({ error: 'Invalid password' });
     }
@@ -64,7 +59,6 @@ exports.login = async (req, res) => {
       { expiresIn: '7d' }
     );
 
-    // Return the user's information and the token
     res.json({
       user: {
         name: user.name,
